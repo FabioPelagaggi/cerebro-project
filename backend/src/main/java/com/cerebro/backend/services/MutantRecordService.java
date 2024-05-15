@@ -40,7 +40,7 @@ public class MutantRecordService {
 
                                 new MutantRecordDto(
                                         4L,
-                                        "Jean Grey",
+                                        "Marvel Girl",
                                         "Jean Grey",
                                         "Omega",
                                         Arrays.asList("Telekinesis", "Telepathy", "Phoenix Force"),
