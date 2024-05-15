@@ -1,5 +1,6 @@
 package com.cerebro.backend.controllers;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,11 @@ public class MutantRecordController {
         return ResponseEntity.ok(mutantRecordService.getAllRecords());
     }
 
-    @PostMapping("/reg-mutant")
+    @PostMapping("/mutants-records")
     public ResponseEntity<MutantRecordDto> createRecord(@RequestBody MutantRecordDto mutantRecordDto) {
-        return ResponseEntity.ok(mutantRecordService.createRecord(mutantRecordDto));
+        MutantRecordDto createdRecord = mutantRecordService.createRecord(mutantRecordDto);
+
+        return ResponseEntity.created(URI.create("/mutants-records/" + createdRecord.getId())).body(createdRecord);
     }
 
     @PutMapping("/update-mutant")
