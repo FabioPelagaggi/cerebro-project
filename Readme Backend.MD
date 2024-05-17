@@ -20,8 +20,9 @@ First, clone the repository to your local machine using Git:
 
 ```bash
 git clone https://github.com/FabioPelagaggi/cerebro-project
-cd cerebro-project
+cd cerebro-project/backend
 ```
+**Attention, the Backend project is located in the backend folder.**
 
 ### Configure the Application
 

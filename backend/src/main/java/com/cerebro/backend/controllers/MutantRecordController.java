@@ -29,6 +29,11 @@ public class MutantRecordController {
         return ResponseEntity.ok(mutantRecordService.getAllRecords());
     }
 
+    @GetMapping("/mutants-records/{id}")
+    public MutantRecordDto putMethodName(@PathVariable Long id) {
+        return mutantRecordService.getRecordById(id);
+    }
+
     @PostMapping("/mutants-records")
     public ResponseEntity<MutantRecordDto> createRecord(@RequestBody MutantRecordDto mutantRecordDto) {
         MutantRecordDto createdRecord = mutantRecordService.createRecord(mutantRecordDto);
