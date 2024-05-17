@@ -82,23 +82,37 @@ public class MutantRecordService {
                                         "Beta",
                                         Arrays.asList("Kinetic Energy Manipulation", "Thief", "Super Agility"),
                                         "Gambit is a mutant who possesses the ability to charge matter with volatile kinetic energy, causing the object in question to explosively release its charge on impact.",
-                                        "https://animecomics.com.br/animecomics/images/upload/11.jpg")
+                                        "https://animecomics.com.br/animecomics/images/upload/11.jpg")                                        
                         );
         }
 
         public MutantRecordDto getRecordById(Long id) {
-                return null;
+
+                MutantRecordDto mutantSearched = getAllRecords().stream()
+                                .filter(mutant -> mutant.getId().equals(id))
+                                .findFirst()
+                                .orElse(null);
+
+                return mutantSearched;
         }
 
         public MutantRecordDto createRecord(MutantRecordDto mutantRecordDto) {
-                return null;
+                return mutantRecordDto;
         }
 
         public MutantRecordDto updateRecord(Long id, MutantRecordDto mutantRecordDto) {
-                return null;
+
+                MutantRecordDto mutantUpdated = getRecordById(id);
+
+                return mutantRecordDto;
         }
 
-        public void deleteRecord(Long id) {
+        public MutantRecordDto deleteRecord(Long id) {
+
+                MutantRecordDto mutantDeleted = getRecordById(id);
+
+                return mutantDeleted;
+
         }
 
 }

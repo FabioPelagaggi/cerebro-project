@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cerebro.backend.dtos.MutantRecordDto;
@@ -14,8 +14,9 @@ import com.cerebro.backend.services.MutantRecordService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -35,16 +36,14 @@ public class MutantRecordController {
         return ResponseEntity.created(URI.create("/mutants-records/" + createdRecord.getId())).body(createdRecord);
     }
 
-    @PutMapping("/update-mutant")
-    public ResponseEntity<MutantRecordDto> updateRecord(@RequestBody MutantRecordDto mutantRecordDto) {
-        return ResponseEntity.ok(mutantRecordService.updateRecord(null, mutantRecordDto));
+    @PutMapping("/mutants-records/{id}")
+    public MutantRecordDto putMethodName(@PathVariable Long id, @RequestBody MutantRecordDto mutantRecordDto) {
+        return mutantRecordService.updateRecord(id, mutantRecordDto);
     }
 
-    /*
-     * @DeleteMapping("/delete-mutant")
-     * public ResponseEntity<MutantRecordDto> deleteRecord(@RequestBody Long id) {
-     * return ResponseEntity.of(mutantRecordService.deleteRecord(id));
-     * }
-     */
+    @DeleteMapping("/mutants-records/{id}")
+    public ResponseEntity<MutantRecordDto> deleteRecord(@PathVariable Long id) {
+        return ResponseEntity.ok(mutantRecordService.deleteRecord(id));
+    }
 
 }

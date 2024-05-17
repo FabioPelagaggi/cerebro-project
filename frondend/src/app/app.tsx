@@ -6,6 +6,7 @@ import { MutantRecord } from 'src/entities/MutantRecord';
 import VerticalContainer from 'src/vertical-container/VerticalContainer';
 
 import ReadContentBox from 'src/content-box/ReadContentBox';
+import CreateContentBox from 'src/content-box/CreateContentBox';
 
 export function App() {
   const [records, setRecords] = React.useState<MutantRecord[]>([]);
@@ -32,7 +33,10 @@ export function App() {
       <div>
         <VerticalContainer>
           <div>
-            <h2>Create</h2>
+            <h2>Mutant Register</h2>
+            <CreateContentBox onSubimit={function (mutantRecord: MutantRecord): void {
+              throw new Error('Function not implemented.');
+            } } />
           </div>
         </VerticalContainer>
       </div>
