@@ -87,6 +87,8 @@ The database was created using docker with the following command:
 docker run -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_USER=backend -e POSTGRES_PASSWORD=backend -e POSTGRES_DB=backenddb -p 5434:5432 postgres:14
 ```
 
+To Start and stop the docker container use the commands below:
+
 ```bash
 docker stop peaceful_albattani
 docker start peaceful_albattani
