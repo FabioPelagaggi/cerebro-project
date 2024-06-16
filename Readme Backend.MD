@@ -22,6 +22,7 @@ First, clone the repository to your local machine using Git:
 git clone https://github.com/FabioPelagaggi/cerebro-project
 cd cerebro-project/backend
 ```
+
 **Attention, the Backend project is located in the backend folder.**
 
 ### Configure the Application
@@ -78,15 +79,28 @@ curl -X POST http://localhost:8080/mutants-records/ \
   }'
 ```
 
+## Database
+
+The database was created using docker with the following command:
+
+```bash
+docker run -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_USER=backend -e POSTGRES_PASSWORD=backend -e POSTGRES_DB=backenddb -p 5434:5432 postgres:14
+```
+
+```bash
+docker stop peaceful_albattani
+docker start peaceful_albattani
+```
+
 ## Troubleshooting
 
 ### Common Issues
 
 1. **Port Already in Use**: If port 8080 is already in use, you can change the port by modifying the `application.properties` file:
 
-    ```properties
-    server.port=8081
-    ```
+   ```properties
+   server.port=8081
+   ```
 
 2. **Dependency Issues**: Ensure all dependencies are correctly specified in the `pom.xml` file and try running `mvn clean install` again.
 

@@ -5,12 +5,22 @@ import java.util.*;
 import org.springframework.stereotype.Service;
 
 import com.cerebro.backend.dtos.MutantRecordDto;
+import com.cerebro.backend.mappers.MutantRecordMapper;
+import com.cerebro.backend.repositories.MutantRecordsRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class MutantRecordService {
 
+        private final MutantRecordsRepository mutantRecordRepository;
+        private final MutantRecordMapper mutantRecordMapper;
+
         public List<MutantRecordDto> getAllRecords() {
-                return Arrays.asList(
+               return mutantRecordMapper.toMutantRecordDtoList(mutantRecordRepository.findAll());
+                
+                /* return Arrays.asList(
                                 new MutantRecordDto(
                                         1L,
                                         "Wolverine",
@@ -83,7 +93,7 @@ public class MutantRecordService {
                                         Arrays.asList("Kinetic Energy Manipulation", "Thief", "Super Agility"),
                                         "Gambit is a mutant who possesses the ability to charge matter with volatile kinetic energy, causing the object in question to explosively release its charge on impact.",
                                         "https://animecomics.com.br/animecomics/images/upload/11.jpg")                                        
-                        );
+                        ); */
         }
 
         public MutantRecordDto getRecordById(Long id) {
