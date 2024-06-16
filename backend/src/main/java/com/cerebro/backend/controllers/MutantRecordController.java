@@ -4,19 +4,13 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cerebro.backend.dtos.MutantRecordDto;
+import com.cerebro.backend.entities.MutantRecordHistory;
 import com.cerebro.backend.services.MutantRecordService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -30,25 +24,32 @@ public class MutantRecordController {
     }
 
     @GetMapping("/mutants-records/{id}")
-    public MutantRecordDto putMethodName(@PathVariable Long id) {
-        return mutantRecordService.getRecordById(id);
+    public ResponseEntity<MutantRecordDto> getRecordById(@PathVariable Long id) {
+        MutantRecordDto record = mutantRecordService.getRecordById(id);
+        return record != null ? ResponseEntity.ok(record) : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/mutants-records")
     public ResponseEntity<MutantRecordDto> createRecord(@RequestBody MutantRecordDto mutantRecordDto) {
         MutantRecordDto createdRecord = mutantRecordService.createRecord(mutantRecordDto);
-
         return ResponseEntity.created(URI.create("/mutants-records/" + createdRecord.getId())).body(createdRecord);
     }
 
     @PutMapping("/mutants-records/{id}")
-    public MutantRecordDto putMethodName(@PathVariable Long id, @RequestBody MutantRecordDto mutantRecordDto) {
-        return mutantRecordService.updateRecord(id, mutantRecordDto);
+    public ResponseEntity<MutantRecordDto> updateRecord(@PathVariable Long id, @RequestBody MutantRecordDto mutantRecordDto) {
+        MutantRecordDto updatedRecord = mutantRecordService.updateRecord(id, mutantRecordDto);
+        return updatedRecord != null ? ResponseEntity.ok(updatedRecord) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/mutants-records/{id}")
     public ResponseEntity<MutantRecordDto> deleteRecord(@PathVariable Long id) {
-        return ResponseEntity.ok(mutantRecordService.deleteRecord(id));
+        MutantRecordDto deletedRecord = mutantRecordService.deleteRecord(id);
+        return deletedRecord != null ? ResponseEntity.ok(deletedRecord) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/mutants-records/{id}/history")
+    public ResponseEntity<List<MutantRecordHistory>> getRecordHistory(@PathVariable Long id) {
+        List<MutantRecordHistory> history = mutantRecordService.getRecordHistory(id);
+        return ResponseEntity.ok(history);
+    }
 }

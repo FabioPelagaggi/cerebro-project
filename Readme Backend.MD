@@ -157,6 +157,38 @@ On Windows:
 ```sh
 gradlew.bat test
 ```
+## Data Change History Functionality
+
+This project includes a feature to track the history of changes made to `MutantRecord` entities. This functionality is crucial for auditing and traceability purposes. 
+
+### How It Works
+
+1. **Entity Setup**:
+   - The `MutantRecordHistory` entity is created to store the history of changes. Each entry records the state of a `MutantRecord` before a change, the timestamp of the change, and the type of change (CREATE, UPDATE, DELETE).
+
+2. **Service Layer**:
+   - The `MutantRecordService` is responsible for handling the business logic of `MutantRecord` operations. For each create, update, or delete operation, the service saves the current state of the `MutantRecord` into the `MutantRecordHistory` table.
+   - The `saveHistory` method in `MutantRecordService` handles the logging of changes by creating a new `MutantRecordHistory` entry.
+
+3. **Endpoints**:
+   - New endpoints are added to the `MutantRecordController` to allow querying the history of changes for a specific `MutantRecord`.
+   - Example: To get the history of a specific record, use the endpoint `/mutants-records/{id}/history`.
+
+### Usage
+
+- **Create**: When a new `MutantRecord` is created, an entry is made in the history with the type `CREATE`.
+- **Update**: When an existing `MutantRecord` is updated, an entry is made in the history with the type `UPDATE`.
+- **Delete**: When a `MutantRecord` is deleted, an entry is made in the history with the type `DELETE`.
+
+### Example
+
+To fetch the history of changes for a `MutantRecord` with ID 1:
+
+```sh
+GET /mutants-records/1/history
+```
+
+This will return a list of `MutantRecordHistory` entries, showing the previous states of the record along with the timestamps and types of changes.
 
 ## Troubleshooting
 
