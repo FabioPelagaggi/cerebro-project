@@ -94,6 +94,70 @@ docker stop peaceful_albattani
 docker start peaceful_albattani
 ```
 
+## Automated Tests for Persistence Layer
+
+This project includes automated tests for the data persistence layer using Spring Boot, JUnit, and H2 Database. These tests ensure that the CRUD operations for `MutantRecord` entities are functioning correctly.
+
+### Test Dependencies
+
+The following dependencies are required for running the tests:
+
+- `spring-boot-starter-test`: Provides support for testing Spring Boot applications.
+- `h2`: An in-memory database for fast and isolated testing.
+
+### Test Structure
+
+The tests are located in the `src/test/java` directory and cover the basic CRUD operations for the `MutantRecord` entity. The primary test class is `MutantRecordsRepositoryTest`.
+
+### Test Descriptions
+
+1. **testSaveMutantRecord**:
+
+   - Verifies that a new `MutantRecord` can be saved correctly in the database.
+   - Ensures the generated ID is not null after saving.
+
+2. **testFindAllMutantRecords**:
+
+   - Verifies that all `MutantRecord` entities can be retrieved from the database.
+   - Ensures the correct number of records are returned.
+
+3. **testFindMutantRecordById**:
+
+   - Verifies that a specific `MutantRecord` can be retrieved by its ID.
+   - Ensures the retrieved record matches the expected values.
+
+4. **testDeleteMutantRecord**:
+   - Verifies that a `MutantRecord` can be deleted correctly from the database.
+   - Ensures the record is no longer present after deletion.
+
+### Running the Tests
+
+You can run the tests using an IDE (such as IntelliJ IDEA or Eclipse) or via the command line using Maven or Gradle.
+
+#### Using Maven:
+
+```sh
+./mvnw test
+```
+
+On Windows:
+
+```sh
+mvnw.cmd test
+```
+
+#### Using Gradle:
+
+```sh
+./gradlew test
+```
+
+On Windows:
+
+```sh
+gradlew.bat test
+```
+
 ## Troubleshooting
 
 ### Common Issues
