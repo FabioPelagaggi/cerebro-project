@@ -12,7 +12,7 @@ comes with a LSP for Vim users.
 
 ## Start the application
 
-Run `npx nx serve frondend` to start the development server. Happy coding!
+Run `npx nx serve frondend` to start the development server.
 
 ## Build for production
 
