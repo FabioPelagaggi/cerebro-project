@@ -26,5 +26,5 @@ public class MutantRecord {
     private String level;
     private String[] mutantPowers;
     private String description;
-    private String imageUrl;
+    private String image;
 }

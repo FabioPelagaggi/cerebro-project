@@ -49,7 +49,7 @@ public class MutantRecordService {
         existingRecord.setLevel(mutantRecordDto.getLevel());
         existingRecord.setMutantPowers(mutantRecordDto.getMutantPowers().toArray(new String[0]));
         existingRecord.setDescription(mutantRecordDto.getDescription());
-        existingRecord.setImageUrl(mutantRecordDto.getImage());
+        existingRecord.setImage(mutantRecordDto.getImage());
 
         MutantRecord updatedRecord = mutantRecordRepository.save(existingRecord);
         saveHistory(updatedRecord, "UPDATE");
@@ -79,7 +79,7 @@ public class MutantRecordService {
         history.setLevel(record.getLevel());
         history.setMutantPowers(record.getMutantPowers());
         history.setDescription(record.getDescription());
-        history.setImageUrl(record.getImageUrl());
+        history.setImageUrl(record.getImage());
         history.setChangeTimestamp(LocalDateTime.now());
         history.setChangeType(changeType);
         mutantRecordHistoryRepository.save(history);
