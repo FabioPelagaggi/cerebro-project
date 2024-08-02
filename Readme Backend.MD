@@ -90,8 +90,10 @@ docker run -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_USER=backend -e POSTGR
 To Start and stop the docker container use the commands below:
 
 ```bash
-docker stop peaceful_albattani
 docker start peaceful_albattani
+```
+```bash
+docker stop peaceful_albattani
 ```
 
 ## Automated Tests for Persistence Layer
