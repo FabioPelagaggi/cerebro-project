@@ -210,6 +210,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 If you have any questions or need further assistance, feel free to contact the project maintainer at [fabio.pnunes@al.infnet.edu.br](mailto:fabio.pnunes@al.infnet.edu.br).
 
----
-
-Happy coding!
