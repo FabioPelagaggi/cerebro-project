@@ -29,6 +29,6 @@ public class MutantRecordHistory {
     private String[] mutantPowers;
     private String description;
     private String imageUrl;
-    private LocalDateTime changeTimestamp;
+    private LocalDateTime changeTimestamp;  
     private String changeType; // CREATE, UPDATE, DELETE
 }

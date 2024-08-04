@@ -9,9 +9,12 @@ import ReadContentBox from 'src/content-box/ReadContentBox';
 import CreateContentBox from 'src/content-box/CreateContentBox';
 import UpdateContentBox from 'src/content-box/UpdateContentBox';
 import DeleteContentBox from 'src/content-box/DeleteContentBox';
+import HistoryContentBox from 'src/content-box/HistoryContentBox';
+import { HistoryRecord } from 'src/entities/HistoryRecord';
 
 export function App() {
   const [records, setRecords] = React.useState<MutantRecord[]>([]);
+  const [historyRecords, setHistoryRecords] = React.useState<HistoryRecord[]>([]);
 
   React.useEffect(() => {
     fetch('http://localhost:8080/mutants-records', {
@@ -26,6 +29,26 @@ export function App() {
       .then((data) => {
         if (data !== null) {
           setRecords(data);
+          // Fetch history records for each mutant record
+          data.forEach((record: MutantRecord) => {
+            fetch(`http://localhost:8080/mutants-records/${record.id}/history`, {
+              method: 'GET',
+            })
+              .then((response) => {
+                if (response.status === 200) {
+                  return response.json();
+                }
+                return null;
+              })
+              .then((historyData) => {
+                if (historyData !== null) {
+                  setHistoryRecords((prevHistoryRecords) => [
+                    ...prevHistoryRecords,
+                    ...historyData,
+                  ]);
+                }
+              });
+          });
         }
       });
   }, []);
@@ -121,6 +144,7 @@ export function App() {
                       if (response.status === 200) {
                         return response.json();
                       }
+                      return null;
                     })
                     .then((data) => {
                       if (data !== null) {
@@ -131,6 +155,16 @@ export function App() {
                     });
                 }}
               />
+            ))}
+          </div>
+        </VerticalContainer>
+      </div>
+      <div>
+        <VerticalContainer>
+          <div>
+            <h2>Mutant Data History</h2>
+            {historyRecords.map((record) => (
+              <HistoryContentBox key={record.id} content={record} />
             ))}
           </div>
         </VerticalContainer>
