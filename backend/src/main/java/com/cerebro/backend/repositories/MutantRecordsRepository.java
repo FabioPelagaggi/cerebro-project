@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cerebro.backend.entities.MutantRecord;
 
-public interface MutantRecordsRepository extends JpaRepository<MutantRecord, Long>{
-    
+public interface MutantRecordsRepository extends JpaRepository<MutantRecord, Long> {
+    Long countByLevel(String level);
 }

@@ -11,10 +11,12 @@ import UpdateContentBox from 'src/content-box/UpdateContentBox';
 import DeleteContentBox from 'src/content-box/DeleteContentBox';
 import HistoryContentBox from 'src/content-box/HistoryContentBox';
 import { HistoryRecord } from 'src/entities/HistoryRecord';
+import OmegaLevelCountContentBox from 'src/content-box/OmegaLevelCountContentBox';
 
 export function App() {
   const [records, setRecords] = React.useState<MutantRecord[]>([]);
   const [historyRecords, setHistoryRecords] = React.useState<HistoryRecord[]>([]);
+  const [omegaLevelCount, setOmegaLevelCount] = React.useState<number>(0);
 
   React.useEffect(() => {
     fetch('http://localhost:8080/mutants-records', {
@@ -49,6 +51,22 @@ export function App() {
                 }
               });
           });
+        }
+      });
+
+      // Fetch omega level mutants count
+    fetch('http://localhost:8080/omega-level-mutants/count', {
+      method: 'GET',
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        return null;
+      })
+      .then((data) => {
+        if (data !== null) {
+          setOmegaLevelCount(data.count);
         }
       });
   }, []);
@@ -166,6 +184,13 @@ export function App() {
             {historyRecords.map((record) => (
               <HistoryContentBox key={record.id} content={record} />
             ))}
+          </div>
+        </VerticalContainer>
+      </div>
+      <div>
+        <VerticalContainer>
+          <div>
+            <OmegaLevelCountContentBox content={omegaLevelCount} />
           </div>
         </VerticalContainer>
       </div>
