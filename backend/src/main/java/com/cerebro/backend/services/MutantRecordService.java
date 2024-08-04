@@ -3,11 +3,13 @@ package com.cerebro.backend.services;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.cerebro.backend.dtos.MutantRecordDto;
 import com.cerebro.backend.entities.MutantRecord;
 import com.cerebro.backend.entities.MutantRecordHistory;
+import com.cerebro.backend.exceptions.AppException;
 import com.cerebro.backend.mappers.MutantRecordMapper;
 import com.cerebro.backend.repositories.MutantRecordHistoryRepository;
 import com.cerebro.backend.repositories.MutantRecordsRepository;
@@ -39,10 +41,7 @@ public class MutantRecordService {
     }
 
     public MutantRecordDto updateRecord(Long id, MutantRecordDto mutantRecordDto) {
-        MutantRecord existingRecord = mutantRecordRepository.findById(id).orElse(null);
-        if (existingRecord == null) {
-            return null;
-        }
+        MutantRecord existingRecord = mutantRecordRepository.findById(id).orElseThrow(() -> new AppException("Record not found with id: " + id, HttpStatus.NOT_FOUND));
 
         existingRecord.setName(mutantRecordDto.getName());
         existingRecord.setRealName(mutantRecordDto.getRealName());
@@ -57,14 +56,12 @@ public class MutantRecordService {
     }
 
     public MutantRecordDto deleteRecord(Long id) {
-        MutantRecord existingRecord = mutantRecordRepository.findById(id).orElse(null);
-        if (existingRecord == null) {
-            return null;
-        }
+        MutantRecord existingRecord = mutantRecordRepository.findById(id).orElseThrow(() -> new AppException("Record not found with id: " + id, HttpStatus.NOT_FOUND));
 
+        MutantRecordDto deletedRecord = mutantRecordMapper.toMutantRecordDto(existingRecord);
         mutantRecordRepository.deleteById(id);
         saveHistory(existingRecord, "DELETE");
-        return mutantRecordMapper.toMutantRecordDto(existingRecord);
+        return deletedRecord;
     }
 
     public List<MutantRecordHistory> getRecordHistory(Long recordId) {

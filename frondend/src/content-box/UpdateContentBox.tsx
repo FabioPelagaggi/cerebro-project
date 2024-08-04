@@ -5,18 +5,11 @@ import './ContentBox.css';
 
 interface ContentBoxProps {
   onSubmit: (mutantRecord: MutantRecord) => void;
+  content: MutantRecord;
 }
 
-const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
-  const [mutantRecord, setMutantRecord] = React.useState<MutantRecord>({
-    id: 0,
-    name: '',
-    realName: '',
-    level: '',
-    mutantPowers: [],
-    description: '',
-    image: '',
-  });
+const UpdateContentBox: React.FC<ContentBoxProps> = ({ onSubmit, content }) => {
+  const [mutantRecord, setMutantRecord] = React.useState<MutantRecord>(content);
 
   const mutantPowersList = [
     'Telepathy',
@@ -59,8 +52,8 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
             type="text"
             placeholder="Name"
             value={mutantRecord.name}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, name: e.target.value })
+            onChange={(event) =>
+              setMutantRecord({ ...mutantRecord, name: event.target.value })
             }
           />
         </div>
@@ -69,8 +62,8 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
             type="text"
             placeholder="Real Name"
             value={mutantRecord.realName}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, realName: e.target.value })
+            onChange={(event) =>
+              setMutantRecord({ ...mutantRecord, realName: event.target.value })
             }
           />
         </div>
@@ -102,11 +95,15 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
           </select>
         </div>
         <div>
-          <textarea
+          <input
+            type="text"
             placeholder="Description"
             value={mutantRecord.description}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, description: e.target.value })
+            onChange={(event) =>
+              setMutantRecord({
+                ...mutantRecord,
+                description: event.target.value,
+              })
             }
           />
         </div>
@@ -115,44 +112,17 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
             type="text"
             placeholder="Image URL"
             value={mutantRecord.image}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, image: e.target.value })
+            onChange={(event) =>
+              setMutantRecord({ ...mutantRecord, image: event.target.value })
             }
           />
         </div>
-
         <div>
-        <h4>Name</h4>
-          <h3>{mutantRecord.name}</h3>
+          <button type="submit">Update</button>
         </div>
-        <div>
-        <h4>Real Name</h4>
-          <h3>{mutantRecord.realName}</h3>
-        </div>
-        <div>
-          <h4>Level</h4>
-          <h3>{mutantRecord.level}</h3>
-        </div>
-        <div>
-          <h4>Mutant Powers</h4>
-          <ul>
-            {mutantRecord.mutantPowers.map((power) => (
-              <li key={power}>{power}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4>Description</h4>
-          <p>{mutantRecord.description}</p>
-        </div>
-        <div>
-          <h4>Image</h4>
-          <img src={mutantRecord.image} />
-        </div>
-        <button type="submit">Create</button>
       </form>
     </div>
   );
 };
 
-export default CreateContentBox;
+export default UpdateContentBox;
