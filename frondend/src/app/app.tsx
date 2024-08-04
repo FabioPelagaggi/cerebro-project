@@ -34,9 +34,28 @@ export function App() {
         <VerticalContainer>
           <div>
             <h2>Mutant Register</h2>
-            <CreateContentBox onSubimit={function (mutantRecord: MutantRecord): void {
-              throw new Error('Function not implemented.');
-            } } />
+            <CreateContentBox
+              onSubmit={function (mutantRecord: MutantRecord): void {
+                fetch('http://localhost:8080/mutants-records', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(mutantRecord),
+                })
+                  .then((response) => {
+                    if (response.status === 201) {
+                      return response.json();
+                    }
+                    return null;
+                  })
+                  .then((data) => {
+                    if (data !== null) {
+                      setRecords([...records, data]);
+                    }
+                  });
+              }}
+            />
           </div>
         </VerticalContainer>
       </div>

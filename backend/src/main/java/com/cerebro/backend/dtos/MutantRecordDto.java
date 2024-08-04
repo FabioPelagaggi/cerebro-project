@@ -20,9 +20,4 @@ public class MutantRecordDto {
     private List<String> mutantPowers;
     private String description;
     private String image;
-    public MutantRecordDto orElseThrow(Object object) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
-    }
-
 }
