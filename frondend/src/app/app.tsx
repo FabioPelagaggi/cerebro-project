@@ -54,7 +54,6 @@ export function App() {
         }
       });
 
-      // Fetch omega level mutants count
     fetch('http://localhost:8080/omega-level-mutants/count', {
       method: 'GET',
     })
