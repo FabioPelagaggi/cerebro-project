@@ -19,55 +19,40 @@ export function App() {
   const [omegaLevelCount, setOmegaLevelCount] = React.useState<number>(0);
 
   React.useEffect(() => {
-    fetch('http://localhost:8080/mutants-records', {
-      method: 'GET',
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        return null;
-      })
-      .then((data) => {
-        if (data !== null) {
-          setRecords(data);
-          // Fetch history records for each mutant record
-          data.forEach((record: MutantRecord) => {
-            fetch(`http://localhost:8080/mutants-records/${record.id}/history`, {
-              method: 'GET',
-            })
-              .then((response) => {
-                if (response.status === 200) {
-                  return response.json();
-                }
-                return null;
-              })
-              .then((historyData) => {
-                if (historyData !== null) {
-                  setHistoryRecords((prevHistoryRecords) => [
-                    ...prevHistoryRecords,
-                    ...historyData,
-                  ]);
-                }
-              });
-          });
-        }
+    const fetchData = async () => {
+      const response = await fetch('http://localhost:8080/mutants-records', {
+        method: 'GET',
       });
+      if (response.status === 200) {
+        const data = await response.json();
+        setRecords(data);
 
-    fetch('http://localhost:8080/omega-level-mutants/count', {
-      method: 'GET',
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        return null;
-      })
-      .then((data) => {
-        if (data !== null) {
-          setOmegaLevelCount(data.count);
-        }
+        // Fetch history records for each mutant record
+        const historyPromises = data.map((record: MutantRecord) =>
+          fetch(`http://localhost:8080/mutants-records/${record.id}/history`, {
+            method: 'GET',
+          }).then((response) => (response.status === 200 ? response.json() : null))
+        );
+
+        const historyDataArray = await Promise.all(historyPromises);
+        const allHistoryData = historyDataArray.flat().filter(Boolean);
+        setHistoryRecords(allHistoryData);
+      }
+    };
+
+    fetchData();
+
+    const fetchOmegaLevelCount = async () => {
+      const response = await fetch('http://localhost:8080/omega-level-mutants/count', {
+        method: 'GET',
       });
+      if (response.status === 200) {
+        const data = await response.json();
+        setOmegaLevelCount(data.count);
+      }
+    };
+
+    fetchOmegaLevelCount();
   }, []);
 
   return (

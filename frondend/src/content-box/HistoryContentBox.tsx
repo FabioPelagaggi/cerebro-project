@@ -13,9 +13,9 @@ const HistoryContentBox: React.FC<ContentBoxProps> = ({ content }) => {
 
   return (
     <div className="content-box">
-{/*         <div>
+        <div>
             <h2>{content.id}</h2>
-        </div> */}
+        </div>
       <div>
         <h2>{content.name}</h2>
       </div>
