@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { MutantRecord } from 'src/entities/MutantRecord';
-
-import './ContentBox.css';
+import { Card, CardContent, CardActions, Button, TextField, Checkbox, FormControlLabel, Typography, Box } from '@mui/material';
 
 interface ContentBoxProps {
   onSubmit: (mutantRecord: MutantRecord) => void;
@@ -23,13 +22,16 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
     'Telekinesis',
     'Time Travel',
     'Teleportation',
+    'Invisibility',
+    'Phoenix Force',
+    'Time Manipulation',
     'Super Strength',
     'Super Speed',
     'Healing Factor',
     'Flight',
     'Force Field',
     'Energy Blast',
-    'Elemental Manipulation',
+    'Elemental',
     'Elasticity',
     'Duplication',
     'Density Control',
@@ -41,118 +43,95 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
     'Acid Generation',
   ];
 
-  function handleMutantPowersChange(
-    event: ChangeEvent<HTMLSelectElement>
-  ): void {
-    const selectedOptions = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setMutantRecord({ ...mutantRecord, mutantPowers: selectedOptions });
+  function handleMutantPowersChange(event: ChangeEvent<HTMLInputElement>): void {
+    const selectedPowers = event.target.checked
+      ? [...mutantRecord.mutantPowers, event.target.value]
+      : mutantRecord.mutantPowers.filter((p) => p !== event.target.value);
+    setMutantRecord({ ...mutantRecord, mutantPowers: selectedPowers });
   }
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent default form submission
+    onSubmit(mutantRecord); // Call the onSubmit function with the current mutantRecord
+  };
+
   return (
-    <div className="content-box">
-      <form onSubmit={() => onSubmit(mutantRecord)}>
-        <div>
-          <input
-            type="text"
-            placeholder="Name"
+    <Card sx={{ maxWidth: 600, margin: 'auto', mt: 5 }}>
+      <CardContent>
+        <Typography variant="h5" component="div" gutterBottom>
+          Create New Mutant
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Name"
             value={mutantRecord.name}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, name: e.target.value })
-            }
+            onChange={(e) => setMutantRecord({ ...mutantRecord, name: e.target.value })}
+            margin="normal"
           />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Real Name"
+          <TextField
+            fullWidth
+            label="Real Name"
             value={mutantRecord.realName}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, realName: e.target.value })
-            }
+            onChange={(e) => setMutantRecord({ ...mutantRecord, realName: e.target.value })}
+            margin="normal"
           />
-        </div>
-        <div>
-          <select
+          <TextField
+            fullWidth
+            select
+            SelectProps={{ native: true }}
+            label="Level"
             value={mutantRecord.level}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, level: e.target.value })
-            }
+            onChange={(e) => setMutantRecord({ ...mutantRecord, level: e.target.value })}
+            margin="normal"
           >
             <option value="">Select Level</option>
             <option value="Omega">Omega</option>
             <option value="Alpha">Alpha</option>
             <option value="Beta">Beta</option>
             <option value="Epsilon">Epsilon</option>
-          </select>
-        </div>
-        <div>
-          <select
-            multiple
-            value={mutantRecord.mutantPowers}
-            onChange={handleMutantPowersChange}
-          >
+          </TextField>
+          <Box mt={2}>
             {mutantPowersList.map((power) => (
-              <option key={power} value={power}>
-                {power}
-              </option>
+              <FormControlLabel
+                key={power}
+                control={
+                  <Checkbox
+                    value={power}
+                    checked={mutantRecord.mutantPowers.includes(power)}
+                    onChange={handleMutantPowersChange}
+                  />
+                }
+                label={power}
+              />
             ))}
-          </select>
-        </div>
-        <div>
-          <textarea
-            placeholder="Description"
+          </Box>
+          <TextField
+            fullWidth
+            label="Description"
             value={mutantRecord.description}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, description: e.target.value })
-            }
+            onChange={(e) => setMutantRecord({ ...mutantRecord, description: e.target.value })}
+            margin="normal"
+            multiline
+            rows={4}
           />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Image URL"
+          <TextField
+            fullWidth
+            label="Image URL"
             value={mutantRecord.image}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, image: e.target.value })
-            }
+            onChange={(e) => setMutantRecord({ ...mutantRecord, image: e.target.value })}
+            margin="normal"
           />
-        </div>
-
-        <div>
-        <h4>Name</h4>
-          <h3>{mutantRecord.name}</h3>
-        </div>
-        <div>
-        <h4>Real Name</h4>
-          <h3>{mutantRecord.realName}</h3>
-        </div>
-        <div>
-          <h4>Level</h4>
-          <h3>{mutantRecord.level}</h3>
-        </div>
-        <div>
-          <h4>Mutant Powers</h4>
-          <ul>
-            {mutantRecord.mutantPowers.map((power) => (
-              <li key={power}>{power}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4>Description</h4>
-          <p>{mutantRecord.description}</p>
-        </div>
-        <div>
-          <h4>Image</h4>
-          <img src={mutantRecord.image} />
-        </div>
-        <button type="submit">Create</button>
-      </form>
-    </div>
+          <CardActions>
+            <Button type="submit" variant="contained" color="primary">
+              Create
+            </Button>
+          </CardActions>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 
 export default CreateContentBox;
+  

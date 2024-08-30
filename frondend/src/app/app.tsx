@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import 'src/app/app.css';
 import { MutantRecord } from 'src/entities/MutantRecord';
@@ -17,6 +17,16 @@ export function App() {
   const [records, setRecords] = React.useState<MutantRecord[]>([]);
   const [historyRecords, setHistoryRecords] = React.useState<HistoryRecord[]>([]);
   const [omegaLevelCount, setOmegaLevelCount] = React.useState<number>(0);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleNewMutantClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -61,28 +71,37 @@ export function App() {
         <VerticalContainer>
           <div>
             <h2>Mutant Register</h2>
-            <CreateContentBox
-              onSubmit={function (mutantRecord: MutantRecord): void {
-                fetch('http://localhost:8080/mutants-records', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(mutantRecord),
-                })
-                  .then((response) => {
-                    if (response.status === 201) {
-                      return response.json();
-                    }
-                    return null;
-                  })
-                  .then((data) => {
-                    if (data !== null) {
-                      setRecords([...records, data]);
-                    }
-                  });
-              }}
-            />
+            <button onClick={handleNewMutantClick}>New Mutant</button>
+            {isModalOpen && (
+              <div className="modal">
+                <div className="modal-content">
+                  <span className="close" onClick={handleCloseModal}>&times;</span>
+                  <CreateContentBox
+                    onSubmit={function (mutantRecord: MutantRecord): void {
+                      fetch('http://localhost:8080/mutants-records', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(mutantRecord),
+                      })
+                        .then((response) => {
+                          if (response.status === 201) {
+                            return response.json();
+                          }
+                          return null;
+                        })
+                        .then((data) => {
+                          if (data !== null) {
+                            setRecords([...records, data]);
+                            handleCloseModal();
+                          }
+                        });
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </VerticalContainer>
       </div>
