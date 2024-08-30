@@ -165,19 +165,21 @@ export function App() {
         <VerticalContainer>
           <div>
             <h2>Mutant Data History</h2>
-            {historyRecords.map((record) => (
-              <HistoryContentBox key={record.id} content={record} />
-            ))}
+            {historyRecords
+              .sort((a, b) => new Date(b.changeTimestamp).getTime() - new Date(a.changeTimestamp).getTime())
+              .map((record) => (
+                <HistoryContentBox key={record.id} content={record} />
+              ))}
           </div>
         </VerticalContainer>
       </div>
-      <div>
+     {/*  <div>
         <VerticalContainer>
           <div>
             <OmegaLevelCountContentBox content={omegaLevelCount} />
           </div>
         </VerticalContainer>
-      </div>
+      </div> */}
     </div>
   );
 }
