@@ -11,29 +11,6 @@ interface ContentBoxProps {
 const DeleteContentBox: React.FC<ContentBoxProps> = ({ onSubmit, content }) => {
   const [mutantRecord, setMutantRecord] = React.useState<MutantRecord>(content);
 
-  const mutantPowersList = [
-    'Telepathy',
-    'Telekinesis',
-    'Time Travel',
-    'Teleportation',
-    'Super Strength',
-    'Super Speed',
-    'Healing Factor',
-    'Flight',
-    'Force Field',
-    'Energy Blast',
-    'Elemental Manipulation',
-    'Elasticity',
-    'Duplication',
-    'Density Control',
-    'Claws',
-    'Chameleon',
-    'Biokinesis',
-    'Animal Mimicry',
-    'Adaptation',
-    'Acid Generation',
-  ];
-
   function handleMutantPowersChange(
     event: ChangeEvent<HTMLSelectElement>
   ): void {

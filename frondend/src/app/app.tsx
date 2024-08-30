@@ -19,6 +19,8 @@ export function App() {
   const [omegaLevelCount, setOmegaLevelCount] = React.useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<MutantRecord | null>(null);
 
   const handleNewMutantClick = () => {
     setIsModalOpen(true);
@@ -26,6 +28,16 @@ export function App() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleDeleteClick = (record: MutantRecord) => {
+    setSelectedRecord(record);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedRecord(null);
   };
 
   React.useEffect(() => {
@@ -154,11 +166,10 @@ export function App() {
           <div>
             <h2>Delete</h2>
             {records.map((record) => (
-              <DeleteContentBox
-                key={record.id}
-                content={record}
-                onSubmit={function (id: number): void {
-                  fetch(`http://localhost:8080/mutants-records/${id}`, {
+              <div key={record.id} style={{ display: 'flex', alignItems: 'center' }}>
+                <span>{record.name}</span>
+                <button onClick={() => {
+                  fetch(`http://localhost:8080/mutants-records/${record.id}`, {
                     method: 'DELETE',
                   })
                     .then((response) => {
@@ -170,12 +181,12 @@ export function App() {
                     .then((data) => {
                       if (data !== null) {
                         setRecords(
-                          records.filter((record) => record.id !== data.id)
+                          records.filter((rec) => rec.id !== data.id)
                         );
                       }
                     });
-                }}
-              />
+                }} style={{ marginLeft: '10px' }}>Delete</button>
+              </div>
             ))}
           </div>
         </VerticalContainer>
