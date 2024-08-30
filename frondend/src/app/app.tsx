@@ -18,26 +18,16 @@ export function App() {
   const [historyRecords, setHistoryRecords] = React.useState<HistoryRecord[]>([]);
   const [omegaLevelCount, setOmegaLevelCount] = React.useState<number>(0);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsNewMutantModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<MutantRecord | null>(null);
 
   const handleNewMutantClick = () => {
-    setIsModalOpen(true);
+    setIsNewMutantModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleDeleteClick = (record: MutantRecord) => {
-    setSelectedRecord(record);
-    setIsDeleteModalOpen(true);
-  };
-
-  const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-    setSelectedRecord(null);
+    setIsNewMutantModalOpen(false);
   };
 
   const formatDate = (timestamp: string) => {
@@ -142,44 +132,11 @@ export function App() {
       <div>
         <VerticalContainer>
           <div>
-            <h2>Update</h2>
-
-            {records.map((record) => (
-              <UpdateContentBox
-                key={record.id}
-                content={record}
-                onSubmit={function (record: MutantRecord): void {
-                  fetch(`http://localhost:8080/mutants-records/${record.id}`, {
-                    method: 'PUT',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(record),
-                  })
-                    .then((response) => {
-                      if (response.status === 200) {
-                        return response.json();
-                      }
-                      return null;
-                    })
-                    .then((data) => {
-                      if (data !== null) {
-                        setRecords([...records, data]);
-                      }
-                    });
-                }}
-              />
-            ))}
-          </div>
-        </VerticalContainer>
-      </div>
-      <div>
-        <VerticalContainer>
-          <div>
-            <h2>Delete</h2>
+            <h2>Update & Delete</h2>
             {records.map((record) => (
               <div key={record.id} className="record-item">
                 <span>{record.name}</span>
+                <button onClick={() => setSelectedRecord(record)}>Update</button>
                 <button onClick={() => {
                   fetch(`http://localhost:8080/mutants-records/${record.id}`, {
                     method: 'DELETE',
@@ -200,6 +157,38 @@ export function App() {
                 }} className="delete-button">Delete</button>
               </div>
             ))}
+
+            {selectedRecord && (
+              <div className="modal">
+                <div className="modal-content">
+                  <span className="close" onClick={() => setSelectedRecord(null)}>&times;</span>
+                  <UpdateContentBox
+                    content={selectedRecord}
+                    onSubmit={function (record: MutantRecord): void {
+                      fetch(`http://localhost:8080/mutants-records/${record.id}`, {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(record),
+                      })
+                        .then((response) => {
+                          if (response.status === 200) {
+                            return response.json();
+                          }
+                          return null;
+                        })
+                        .then((data) => {
+                          if (data !== null) {
+                            setRecords(records.map(rec => rec.id === data.id ? data : rec));
+                            setSelectedRecord(null); // Close modal after update
+                          }
+                        });
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </VerticalContainer>
       </div>
