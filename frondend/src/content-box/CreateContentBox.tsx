@@ -51,8 +51,8 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent default form submission
-    onSubmit(mutantRecord); // Call the onSubmit function with the current mutantRecord
+    event.preventDefault(); 
+    onSubmit(mutantRecord);
   };
 
   return (
@@ -80,12 +80,11 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
             fullWidth
             select
             SelectProps={{ native: true }}
-            label="Level"
             value={mutantRecord.level}
             onChange={(e) => setMutantRecord({ ...mutantRecord, level: e.target.value })}
             margin="normal"
           >
-            <option value="">Select Level</option>
+            <option value="" disabled>Select Level</option>
             <option value="Omega">Omega</option>
             <option value="Alpha">Alpha</option>
             <option value="Beta">Beta</option>
@@ -134,4 +133,3 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
 };
 
 export default CreateContentBox;
-  
