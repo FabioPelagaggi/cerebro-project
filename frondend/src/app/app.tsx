@@ -40,6 +40,18 @@ export function App() {
     setSelectedRecord(null);
   };
 
+  const formatDate = (timestamp: string) => {
+    const date = new Date(timestamp);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+
+    return `${hours}:${minutes}:${seconds} - ${day}/${month}/${year}`;
+  };
+
   React.useEffect(() => {
     const fetchData = async () => {
       const response = await fetch('http://localhost:8080/mutants-records', {
@@ -166,7 +178,7 @@ export function App() {
           <div>
             <h2>Delete</h2>
             {records.map((record) => (
-              <div key={record.id} style={{ display: 'flex', alignItems: 'center' }}>
+              <div key={record.id} className="record-item">
                 <span>{record.name}</span>
                 <button onClick={() => {
                   fetch(`http://localhost:8080/mutants-records/${record.id}`, {
@@ -185,7 +197,7 @@ export function App() {
                         );
                       }
                     });
-                }} style={{ marginLeft: '10px' }}>Delete</button>
+                }} className="delete-button">Delete</button>
               </div>
             ))}
           </div>
@@ -193,17 +205,10 @@ export function App() {
       </div>
       <div>
         <VerticalContainer>
-          <div>
-            <h2>Mutant Data History</h2>
-            {historyRecords
-              .sort((a, b) => new Date(b.changeTimestamp).getTime() - new Date(a.changeTimestamp).getTime())
-              .map((record) => (
-                <HistoryContentBox key={record.id} content={record} />
-              ))}
-          </div>
+          <HistoryContentBox historyRecords={historyRecords} />
         </VerticalContainer>
       </div>
-     {/*  <div>
+      {/* <div>
         <VerticalContainer>
           <div>
             <OmegaLevelCountContentBox content={omegaLevelCount} />

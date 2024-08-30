@@ -1,32 +1,48 @@
 import React from 'react';
-import { MutantRecord } from 'src/entities/MutantRecord';
-
-import './ContentBox.css';
 import { HistoryRecord } from 'src/entities/HistoryRecord';
 
-interface ContentBoxProps {
-  content: HistoryRecord;
+interface HistoryContentBoxProps {
+  historyRecords: HistoryRecord[];
 }
 
-const HistoryContentBox: React.FC<ContentBoxProps> = ({ content }) => {
-  const [records, setRecords] = React.useState<HistoryRecord>(content);
+const HistoryContentBox: React.FC<HistoryContentBoxProps> = ({ historyRecords }) => {
+  const formatDate = (timestamp: string) => {
+    const date = new Date(timestamp);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+
+    return `${hours}:${minutes}:${seconds} - ${day}/${month}/${year}`;
+  };
 
   return (
-    <div className="content-box">
-        <div>
-            <h2>{content.id}</h2>
-        </div>
-      <div>
-        <h2>{content.name}</h2>
-      </div>
-      <div>
-        <h4>Change Timestamp</h4>
-        <p>{content.changeTimestamp}</p>
-      </div>
-      <div>
-        <h4>Change Type</h4>
-        <p>{content.changeType}</p>
-      </div>
+    <div>
+      <h2>Mutant Data History</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Change Timestamp</th>
+            <th>Change Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {historyRecords
+            .sort((a, b) => new Date(b.changeTimestamp).getTime() - new Date(a.changeTimestamp).getTime())
+            .map((record) => (
+              <tr key={record.id}>
+                <td>{record.id}</td>
+                <td>{record.name}</td>
+                <td>{formatDate(record.changeTimestamp)}</td> {/* Format the timestamp */}
+                <td>{record.changeType}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     </div>
   );
 };
