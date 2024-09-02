@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 
 @SpringBootApplication
-@EnableRabbit // Enable RabbitMQ support
+@EnableRabbit
 
 public class BackendApplication {
 
