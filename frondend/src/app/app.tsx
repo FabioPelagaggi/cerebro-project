@@ -5,13 +5,15 @@ import { MutantRecord } from 'src/entities/MutantRecord';
 
 import VerticalContainer from 'src/vertical-container/VerticalContainer';
 
+import { Card, CardContent, CardActions, Button, TextField, Checkbox, FormControlLabel, Typography, Box } from '@mui/material';
+
 import ReadContentBox from 'src/content-box/ReadContentBox';
 import CreateContentBox from 'src/content-box/CreateContentBox';
 import UpdateContentBox from 'src/content-box/UpdateContentBox';
-import DeleteContentBox from 'src/content-box/DeleteContentBox';
 import HistoryContentBox from 'src/content-box/HistoryContentBox';
 import { HistoryRecord } from 'src/entities/HistoryRecord';
 import OmegaLevelCountContentBox from 'src/content-box/OmegaLevelCountContentBox';
+
 
 export function App() {
   const [records, setRecords] = React.useState<MutantRecord[]>([]);
@@ -85,7 +87,7 @@ export function App() {
         <VerticalContainer>
           <div>
             <h2>Mutant Register</h2>
-            <button onClick={handleNewMutantClick}>New Mutant</button>
+            <Button variant="contained" color="primary" onClick={handleNewMutantClick}>New Mutant</Button>
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
@@ -131,32 +133,44 @@ export function App() {
       </div>
       <div>
         <VerticalContainer>
-          <div>
+          <div className="center">
             <h2>Update & Delete</h2>
-            {records.map((record) => (
-              <div key={record.id} className="record-item">
-                <span>{record.name}</span>
-                <button onClick={() => setSelectedRecord(record)}>Update</button>
-                <button onClick={() => {
-                  fetch(`http://localhost:8080/mutants-records/${record.id}`, {
-                    method: 'DELETE',
-                  })
-                    .then((response) => {
-                      if (response.status === 200) {
-                        return response.json();
-                      }
-                      return null;
-                    })
-                    .then((data) => {
-                      if (data !== null) {
-                        setRecords(
-                          records.filter((rec) => rec.id !== data.id)
-                        );
-                      }
-                    });
-                }} className="delete-button">Delete</button>
-              </div>
-            ))}
+            <table className="center-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {records.map((record) => (
+                  <tr key={record.id} className="record-item">
+                    <td>{record.name}</td>
+                    <td>
+                      <button onClick={() => setSelectedRecord(record)}>Update</button>
+                      <button onClick={() => {
+                        fetch(`http://localhost:8080/mutants-records/${record.id}`, {
+                          method: 'DELETE',
+                        })
+                          .then((response) => {
+                            if (response.status === 200) {
+                              return response.json();
+                            }
+                            return null;
+                          })
+                          .then((data) => {
+                            if (data !== null) {
+                              setRecords(
+                                records.filter((rec) => rec.id !== data.id)
+                              );
+                            }
+                          });
+                      }} className="delete-button">Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
             {selectedRecord && (
               <div className="modal">

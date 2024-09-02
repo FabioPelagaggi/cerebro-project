@@ -17,6 +17,14 @@
   width: auto;
 }
 
+.history-content-box {
+  text-align: center;
+}
+
+.history-table {
+  margin: 0 auto;
+}
+
 .content-box > input {
   width: 200px;
   padding: 8px;
@@ -49,4 +57,5 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type='number'] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }

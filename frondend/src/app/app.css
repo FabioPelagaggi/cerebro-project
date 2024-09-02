@@ -27,6 +27,14 @@
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+.center {
+    text-align: center;
+}
+
+.center-table {
+    margin: 0 auto;
+}
+
 .modal-content {
     background-color: #fefefe;
     margin: auto;

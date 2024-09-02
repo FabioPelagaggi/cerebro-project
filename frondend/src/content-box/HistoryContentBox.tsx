@@ -19,9 +19,9 @@ const HistoryContentBox: React.FC<HistoryContentBoxProps> = ({ historyRecords })
   };
 
   return (
-    <div>
+    <div className="history-content-box">
       <h2>Mutant Data History</h2>
-      <table>
+      <table className="history-table">
         <thead>
           <tr>
             <th>ID</th>
