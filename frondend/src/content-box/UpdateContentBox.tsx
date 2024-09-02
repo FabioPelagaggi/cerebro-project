@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { MutantRecord } from 'src/entities/MutantRecord';
 import { mutantsPowersList } from 'src/entities/MutantsPowersList';
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Checkbox, FormControlLabel } from '@mui/material';
 
 interface ContentBoxProps {
   onSubmit: (mutantRecord: MutantRecord) => void;
@@ -23,57 +24,63 @@ const UpdateContentBox: React.FC<ContentBoxProps> = ({ onSubmit, content }) => {
   return (
     <div className="content-box">
       <form onSubmit={() => onSubmit(mutantRecord)}>
-        <div>
-          <input
-            type="text"
-            placeholder="Name"
+        <div className="margin-bottom">
+          <TextField
+            label="Name"
             value={mutantRecord.name}
             onChange={(event) =>
               setMutantRecord({ ...mutantRecord, name: event.target.value })
             }
           />
         </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Real Name"
+        <div className="margin-bottom">
+          <TextField
+            label="Real Name"
             value={mutantRecord.realName}
             onChange={(event) =>
               setMutantRecord({ ...mutantRecord, realName: event.target.value })
             }
           />
         </div>
-        <div>
-          <select
-            value={mutantRecord.level}
-            onChange={(e) =>
-              setMutantRecord({ ...mutantRecord, level: e.target.value })
-            }
-          >
-            <option value="">Select Level</option>
-            <option value="Omega">Omega</option>
-            <option value="Alpha">Alpha</option>
-            <option value="Beta">Beta</option>
-            <option value="Epsilon">Epsilon</option>
-          </select>
+        <div className="margin-bottom">
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Select Level</InputLabel>
+            <Select
+              value={mutantRecord.level}
+              onChange={(e) =>
+                setMutantRecord({ ...mutantRecord, level: e.target.value })
+              }
+            >
+              <MenuItem value=""><em>Select Level</em></MenuItem>
+              <MenuItem value="Omega">Omega</MenuItem>
+              <MenuItem value="Alpha">Alpha</MenuItem>
+              <MenuItem value="Beta">Beta</MenuItem>
+              <MenuItem value="Epsilon">Epsilon</MenuItem>
+            </Select>
+          </FormControl>
         </div>
-        <div>
-          <select
-            multiple
-            value={mutantRecord.mutantPowers}
-            onChange={handleMutantPowersChange}
-          >
-            {mutantsPowersList.map((power) => (
-              <option key={power} value={power}>
-                {power}
-              </option>
-            ))}
-          </select>
+        <div className="margin-bottom">
+          {mutantsPowersList.map((power) => (
+            <FormControlLabel
+              key={power}
+              control={
+                <Checkbox
+                  checked={mutantRecord.mutantPowers.includes(power)}
+                  onChange={(e) => {
+                    const selectedOptions = e.target.checked
+                      ? [...mutantRecord.mutantPowers, power]
+                      : mutantRecord.mutantPowers.filter((p) => p !== power);
+                    setMutantRecord({ ...mutantRecord, mutantPowers: selectedOptions });
+                  }}
+                />
+              }
+              label={power}
+            />
+          ))}
         </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Description"
+        <div className="margin-bottom">
+          <TextField
+            label="Description"
             value={mutantRecord.description}
             onChange={(event) =>
               setMutantRecord({
@@ -83,10 +90,9 @@ const UpdateContentBox: React.FC<ContentBoxProps> = ({ onSubmit, content }) => {
             }
           />
         </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Image URL"
+        <div className="margin-bottom">
+          <TextField
+            label="Image URL"
             value={mutantRecord.image}
             onChange={(event) =>
               setMutantRecord({ ...mutantRecord, image: event.target.value })
@@ -94,7 +100,7 @@ const UpdateContentBox: React.FC<ContentBoxProps> = ({ onSubmit, content }) => {
           />
         </div>
         <div>
-          <button type="submit">Update</button>
+          <Button type="submit" variant="contained" color="primary">Update</Button>
         </div>
       </form>
     </div>

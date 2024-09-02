@@ -47,6 +47,10 @@
   background-color: #0056b3;
 }
 
+.margin-bottom {
+  margin-bottom: 16px; /* Moved margin to CSS */
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
