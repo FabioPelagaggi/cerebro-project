@@ -1,15 +1,15 @@
-package com.cerebro.backend;
+package com.cerebro.record_history;
 
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 
 @SpringBootApplication
 @EnableRabbit
-public class BackendApplication {
+public class RecordHistoryApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BackendApplication.class, args);
+		SpringApplication.run(RecordHistoryApplication.class, args);
 	}
 
 }

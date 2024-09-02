@@ -23,8 +23,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MutantRecordService {
 
-    @Autowired private MutantRequestProducer mutantRequestProducer;
-    
+    @Autowired
+    private MutantRequestProducer mutantRequestProducer;
+
     private final MutantRecordsRepository mutantRecordRepository;
     private final MutantRecordHistoryRepository mutantRecordHistoryRepository;
     private final MutantRecordMapper mutantRecordMapper;
@@ -39,7 +40,6 @@ public class MutantRecordService {
             throw new AppException("Error processing JSON", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-
         return mutantRecordMapper.toMutantRecordDtoList(mutantRecords);
     }
 
@@ -48,21 +48,24 @@ public class MutantRecordService {
         return mutantRecord != null ? mutantRecordMapper.toMutantRecordDto(mutantRecord) : null;
     }
 
-    public MutantRecordDto createRecord(MutantRecordDto mutantRecordDto) {
+    public MutantRecordDto createRecord(MutantRecordDto mutantRecordDto) throws JsonProcessingException {
         try {
             mutantRequestProducer.createRecord(mutantRecordDto);
         } catch (JsonProcessingException e) {
             throw new AppException("Error processing JSON", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
+
         MutantRecord mutantRecord = mutantRecordMapper.toMutantRecord(mutantRecordDto);
         MutantRecord savedRecord = mutantRecordRepository.save(mutantRecord);
-        saveHistory(savedRecord, "CREATE");
+        
+        mutantRequestProducer.postMutantHistory(savedRecord, "CREATE");
+
         return mutantRecordMapper.toMutantRecordDto(savedRecord);
     }
 
     public MutantRecordDto updateRecord(Long id, MutantRecordDto mutantRecordDto) {
-        MutantRecord existingRecord = mutantRecordRepository.findById(id).orElseThrow(() -> new AppException("Record not found with id: " + id, HttpStatus.NOT_FOUND));
+        MutantRecord existingRecord = mutantRecordRepository.findById(id)
+                .orElseThrow(() -> new AppException("Record not found with id: " + id, HttpStatus.NOT_FOUND));
 
         existingRecord.setName(mutantRecordDto.getName());
         existingRecord.setRealName(mutantRecordDto.getRealName());
@@ -77,7 +80,8 @@ public class MutantRecordService {
     }
 
     public MutantRecordDto deleteRecord(Long id) {
-        MutantRecord existingRecord = mutantRecordRepository.findById(id).orElseThrow(() -> new AppException("Record not found with id: " + id, HttpStatus.NOT_FOUND));
+        MutantRecord existingRecord = mutantRecordRepository.findById(id)
+                .orElseThrow(() -> new AppException("Record not found with id: " + id, HttpStatus.NOT_FOUND));
 
         MutantRecordDto deletedRecord = mutantRecordMapper.toMutantRecordDto(existingRecord);
         mutantRecordRepository.deleteById(id);

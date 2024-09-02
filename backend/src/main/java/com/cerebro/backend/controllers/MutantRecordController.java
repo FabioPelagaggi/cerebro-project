@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.cerebro.backend.dtos.MutantRecordDto;
 import com.cerebro.backend.entities.MutantRecordHistory;
 import com.cerebro.backend.services.MutantRecordService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +31,7 @@ public class MutantRecordController {
     }
 
     @PostMapping("/mutants-records")
-    public ResponseEntity<MutantRecordDto> createRecord(@RequestBody MutantRecordDto mutantRecordDto) {
+    public ResponseEntity<MutantRecordDto> createRecord(@RequestBody MutantRecordDto mutantRecordDto) throws JsonProcessingException {
         MutantRecordDto createdRecord = mutantRecordService.createRecord(mutantRecordDto);
         return ResponseEntity.created(URI.create("/mutants-records/" + createdRecord.getId())).body(createdRecord);
     }
