@@ -2,8 +2,10 @@ package com.cerebro.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 
 @SpringBootApplication
+@EnableRabbit // Enable RabbitMQ support
 
 public class BackendApplication {
 
