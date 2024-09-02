@@ -3,6 +3,7 @@ package com.cerebro.backend.services;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +12,10 @@ import com.cerebro.backend.entities.MutantRecord;
 import com.cerebro.backend.entities.MutantRecordHistory;
 import com.cerebro.backend.exceptions.AppException;
 import com.cerebro.backend.mappers.MutantRecordMapper;
+import com.cerebro.backend.producer.MutantRequestProducer;
 import com.cerebro.backend.repositories.MutantRecordHistoryRepository;
 import com.cerebro.backend.repositories.MutantRecordsRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,12 +23,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MutantRecordService {
 
+    @Autowired private MutantRequestProducer mutantRequestProducer;
+    
     private final MutantRecordsRepository mutantRecordRepository;
     private final MutantRecordHistoryRepository mutantRecordHistoryRepository;
     private final MutantRecordMapper mutantRecordMapper;
 
     public List<MutantRecordDto> getAllRecords() {
-        return mutantRecordMapper.toMutantRecordDtoList(mutantRecordRepository.findAll());
+
+        List<MutantRecord> mutantRecords = mutantRecordRepository.findAll();
+
+        try {
+            mutantRequestProducer.getAllRecords(mutantRecordMapper.toMutantRecordDtoList(mutantRecords));
+        } catch (JsonProcessingException e) {
+            throw new AppException("Error processing JSON", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+        return mutantRecordMapper.toMutantRecordDtoList(mutantRecords);
     }
 
     public MutantRecordDto getRecordById(Long id) {
@@ -34,6 +49,12 @@ public class MutantRecordService {
     }
 
     public MutantRecordDto createRecord(MutantRecordDto mutantRecordDto) {
+        try {
+            mutantRequestProducer.createRecord(mutantRecordDto);
+        } catch (JsonProcessingException e) {
+            throw new AppException("Error processing JSON", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
         MutantRecord mutantRecord = mutantRecordMapper.toMutantRecord(mutantRecordDto);
         MutantRecord savedRecord = mutantRecordRepository.save(mutantRecord);
         saveHistory(savedRecord, "CREATE");
