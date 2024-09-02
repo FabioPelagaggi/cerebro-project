@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { MutantRecord } from 'src/entities/MutantRecord';
 import { Card, CardContent, CardActions, Button, TextField, Checkbox, FormControlLabel, Typography, Box } from '@mui/material';
+import { mutantsPowersList } from 'src/entities/MutantsPowersList';
 
 interface ContentBoxProps {
   onSubmit: (mutantRecord: MutantRecord) => void;
@@ -16,32 +17,6 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
     description: '',
     image: '',
   });
-
-  const mutantPowersList = [
-    'Telepathy',
-    'Telekinesis',
-    'Time Travel',
-    'Teleportation',
-    'Invisibility',
-    'Phoenix Force',
-    'Time Manipulation',
-    'Super Strength',
-    'Super Speed',
-    'Healing Factor',
-    'Flight',
-    'Force Field',
-    'Energy Blast',
-    'Elemental',
-    'Elasticity',
-    'Duplication',
-    'Density Control',
-    'Claws',
-    'Chameleon',
-    'Biokinesis',
-    'Animal Mimicry',
-    'Adaptation',
-    'Acid Generation',
-  ];
 
   function handleMutantPowersChange(event: ChangeEvent<HTMLInputElement>): void {
     const selectedPowers = event.target.checked
@@ -91,7 +66,7 @@ const CreateContentBox: React.FC<ContentBoxProps> = ({ onSubmit }) => {
             <option value="Epsilon">Epsilon</option>
           </TextField>
           <Box mt={2}>
-            {mutantPowersList.map((power) => (
+            {mutantsPowersList.map((power) => (
               <FormControlLabel
                 key={power}
                 control={

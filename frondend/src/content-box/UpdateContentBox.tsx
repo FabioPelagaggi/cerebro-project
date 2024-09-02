@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { MutantRecord } from 'src/entities/MutantRecord';
-
-import './ContentBox.css';
+import { mutantsPowersList } from 'src/entities/MutantsPowersList';
 
 interface ContentBoxProps {
   onSubmit: (mutantRecord: MutantRecord) => void;
@@ -10,29 +9,6 @@ interface ContentBoxProps {
 
 const UpdateContentBox: React.FC<ContentBoxProps> = ({ onSubmit, content }) => {
   const [mutantRecord, setMutantRecord] = React.useState<MutantRecord>(content);
-
-  const mutantPowersList = [
-    'Telepathy',
-    'Telekinesis',
-    'Time Travel',
-    'Teleportation',
-    'Super Strength',
-    'Super Speed',
-    'Healing Factor',
-    'Flight',
-    'Force Field',
-    'Energy Blast',
-    'Elemental Manipulation',
-    'Elasticity',
-    'Duplication',
-    'Density Control',
-    'Claws',
-    'Chameleon',
-    'Biokinesis',
-    'Animal Mimicry',
-    'Adaptation',
-    'Acid Generation',
-  ];
 
   function handleMutantPowersChange(
     event: ChangeEvent<HTMLSelectElement>
@@ -87,7 +63,7 @@ const UpdateContentBox: React.FC<ContentBoxProps> = ({ onSubmit, content }) => {
             value={mutantRecord.mutantPowers}
             onChange={handleMutantPowersChange}
           >
-            {mutantPowersList.map((power) => (
+            {mutantsPowersList.map((power) => (
               <option key={power} value={power}>
                 {power}
               </option>
