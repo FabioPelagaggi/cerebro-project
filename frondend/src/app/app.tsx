@@ -21,7 +21,6 @@ export function App() {
   const [omegaLevelCount, setOmegaLevelCount] = React.useState<number>(0);
 
   const [isModalOpen, setIsNewMutantModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<MutantRecord | null>(null);
 
   const handleNewMutantClick = () => {
@@ -30,18 +29,6 @@ export function App() {
 
   const handleCloseModal = () => {
     setIsNewMutantModalOpen(false);
-  };
-
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-    const year = date.getFullYear();
-
-    return `${hours}:${minutes}:${seconds} - ${day}/${month}/${year}`;
   };
 
   React.useEffect(() => {
@@ -87,7 +74,9 @@ export function App() {
         <VerticalContainer>
           <div>
             <h2>Mutant Register</h2>
-            <Button variant="contained" color="primary" onClick={handleNewMutantClick}>New Mutant</Button>
+            <div className='center'>
+              <Button variant="contained" color="primary" onClick={handleNewMutantClick}>New Mutant</Button>
+            </div>
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
