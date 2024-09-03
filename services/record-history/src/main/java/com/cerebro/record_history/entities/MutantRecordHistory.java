@@ -23,6 +23,14 @@ public class MutantRecordHistory {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Long recordId;
-    private LocalDateTime changeTimestamp;  
-    private String changeType; // CREATE, UPDATE, DELETE
+    private String name;
+    private LocalDateTime changeTimestamp;
+    private String changeType;
+
+    public MutantRecordHistory(Long recordId, String name, String changeType) {
+        this.recordId = recordId;
+        this.name = name;
+        this.changeTimestamp = LocalDateTime.now();
+        this.changeType = changeType;
+    }
 }

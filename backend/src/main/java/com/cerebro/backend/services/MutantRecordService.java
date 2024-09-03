@@ -49,17 +49,15 @@ public class MutantRecordService {
     }
 
     public MutantRecordDto createRecord(MutantRecordDto mutantRecordDto) throws JsonProcessingException {
-        try {
-            mutantRequestProducer.createRecord(mutantRecordDto);
-        } catch (JsonProcessingException e) {
-            throw new AppException("Error processing JSON", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
         MutantRecord mutantRecord = mutantRecordMapper.toMutantRecord(mutantRecordDto);
         MutantRecord savedRecord = mutantRecordRepository.save(mutantRecord);
         
-        mutantRequestProducer.postMutantHistory(savedRecord, "CREATE");
-
+        try {
+            mutantRequestProducer.createRecordHistory(savedRecord, "CREATE");
+        } catch (JsonProcessingException e) {
+            throw new AppException("Error processing JSON", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
         return mutantRecordMapper.toMutantRecordDto(savedRecord);
     }
 

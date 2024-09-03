@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.cerebro.backend.dtos.MutantRecordDto;
 import com.cerebro.backend.entities.MutantRecord;
+import com.cerebro.backend.entities.MutantRecordHistory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -33,11 +34,16 @@ public class MutantRequestProducer {
                 objectMapper.writeValueAsString(list));
     }
 
-    public void postMutantHistory(MutantRecord savedRecord, String action) throws JsonProcessingException {
-        System.out.println("Create Mutant Record - postMutantHistory");
+    public void createRecordHistory(MutantRecord savedRecord, String action) throws JsonProcessingException {
+
+        MutantRecordHistory newRecordHistory = new MutantRecordHistory(savedRecord.getId(), savedRecord.getName(),
+                savedRecord.getRealName(),
+                savedRecord.getLevel(), savedRecord.getMutantPowers(), savedRecord.getDescription(),
+                savedRecord.getImage(), action);
+
         amqpTemplate.convertAndSend(
                 "req-mutant-history",
                 "req-mutant-history-rout-key",
-                objectMapper.writeValueAsString(new Object[] { savedRecord, action }));
+                objectMapper.writeValueAsString(newRecordHistory));
     }
 }

@@ -1,11 +1,13 @@
-package com.cerebro.backend.entities;
+package com.cerebro.record_history.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+
+import java.util.Arrays;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "mutant_record_history")
-public class MutantRecordHistory {
+public class MutantPayload {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,10 +30,11 @@ public class MutantRecordHistory {
     private String[] mutantPowers;
     private String description;
     private String imageUrl;
-    private LocalDateTime changeTimestamp;  
+    private LocalDateTime changeTimestamp;
     private String changeType; // CREATE, UPDATE, DELETE
 
-    public MutantRecordHistory(Long recordId, String name, String realName, String level, String[] mutantPowers, String description, String imageUrl, LocalDateTime changeTimestamp, String changeType) {
+    public MutantPayload(Long recordId, String name, String realName, String level, String[] mutantPowers,
+            String description, String imageUrl, LocalDateTime changeTimestamp, String changeType) {
         this.recordId = recordId;
         this.name = name;
         this.realName = realName;
@@ -44,7 +46,8 @@ public class MutantRecordHistory {
         this.changeType = changeType;
     }
 
-    public MutantRecordHistory(Long recordId, String name, String realName, String level, String[] mutantPowers, String description, String imageUrl) {
+    public MutantPayload(Long recordId, String name, String realName, String level, String[] mutantPowers,
+            String description, String imageUrl) {
         this.recordId = recordId;
         this.name = name;
         this.realName = realName;
@@ -54,7 +57,8 @@ public class MutantRecordHistory {
         this.imageUrl = imageUrl;
     }
 
-    public MutantRecordHistory(Long recordId, String name, String realName, String level, String[] mutantPowers, String description, String imageUrl, String changeType) {
+    public MutantPayload(Long recordId, String name, String realName, String level, String[] mutantPowers,
+            String description, String imageUrl, String changeType) {
         this.recordId = recordId;
         this.name = name;
         this.realName = realName;
@@ -63,5 +67,21 @@ public class MutantRecordHistory {
         this.description = description;
         this.imageUrl = imageUrl;
         this.changeType = changeType;
+    }
+
+    @Override
+    public String toString() {
+        return "MutantPayload{" +
+                "id=" + id +
+                ", recordId=" + recordId +
+                ", name='" + name + '\'' +
+                ", realName='" + realName + '\'' +
+                ", level='" + level + '\'' +
+                ", mutantPowers=" + (mutantPowers != null ? Arrays.toString(mutantPowers) : "[]") +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", changeTimestamp=" + (changeTimestamp != null ? changeTimestamp.toString() : "null") +
+                ", changeType='" + changeType + '\'' +
+                '}';
     }
 }
